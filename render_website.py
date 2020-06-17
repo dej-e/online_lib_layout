@@ -7,7 +7,8 @@ import math, os
 
 
 def on_reload():
-    render_index_page('books_description.json')
+    #render_index_pages('template.html', books_description, 20)
+    pass
 
 
 def parse_json(filename):
