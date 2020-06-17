@@ -8,24 +8,31 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="icon" type="image/png" href="../favicon.png" sizes="32x32">
-    <title>Hello, world!</title>
+    <title>Библиотека для дедушки.</title>
 </head>
 <body>
 
 <nav aria-label="Page navigation example">
   <ul class="pagination">
     {% if current_page == page_numbers[0] %}
-      <li class="page-item"><a class="page-link" href="#" tabindex="-1" aria-disabled="true" >Назад</a></li>
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Назад</a>
+      </li>
     {% else %}
-      <li class="page-item"><a class="page-link" href="../pages/index{{ previous_page }}.html">Назад</a></li>
+      <li class="page-item">
+        <a class="page-link" href="../pages/index{{ previous_page }}.html">Назад</a>
+      </li>
     {% endif %}
 
     {% for page in page_numbers %}
       {% if page == current_page %}
-
-        <li class="page-item active" aria-current="page"><a class="page-link" href="../pages/index{{ page }}.html">{{ page }} <span class="sr-only"></span></a></li>
+        <li class="page-item active" aria-current="page">
+          <a class="page-link" href="../pages/index{{ page }}.html">{{ page }} <span class="sr-only"></span></a>
+        </li>
       {% else %}
-        <li class="page-item"><a class="page-link" href="../pages/index{{ page }}.html">{{ page }}</a></li>
+        <li class="page-item">
+          <a class="page-link" href="../pages/index{{ page }}.html">{{ page }}</a>
+        </li>
       {% endif %}
     {% endfor %}
 
@@ -35,45 +42,41 @@
       </li>
     {% else %}
       <li class="page-item">
-        <a class="page-link" href="../pages/index{{ next_page }}.html">Вперед</a>
+        <a class="page-link" href="../pages/index{{ current_page + 1 }}.html">Вперед</a>
       </li>
     {% endif %}
   </ul>
 </nav>
 
 <div class="container">
-<div class="row">
-{% for book in books %}
+  <div class="row">
+  {% for book in books %}
     {% for row in range(2) %}
-        {% if book[row] is defined %}
-<div class="col">
-<div class="card mb-3" style="max-width: 540px;">
-    <div class="row no-gutters">
-        <div class="col-md-4">
-            <img src=../{{ book[row].img_src|urlencode }} class="card-img" alt="{{ book[row].title }}">
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title">{{ book[row].title }}</h5>
-                <p class="card-text">{{ book[row].author }}</p>
+      {% if book[row] is defined %}
+        <div class="col">
+          <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img src=../{{ book[row].img_src|urlencode }} class="card-img" alt="{{ book[row].title }}">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ book[row].title }}</h5>
+                  <p class="card-text">{{ book[row].author }}</p>
                 {% for genre in book[row].genres %}
                   <h6><span class="badge badge-secondary">{{ genre }}</span></h6>
                 {% endfor %}
-                <a href=../{{ book[row].book_path|urlencode }} class="card-text" target="_blank" rel="noopener noreferrer">Читать</a>
-                <!--<p class="card-text"><small class="text-muted">Last updated 5 mins ago</small></p>-->
+                  <a href=../{{ book[row].book_path|urlencode }} class="card-text" target="_blank" rel="noopener noreferrer">Читать</a>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>
-</div>
-        {% endif %}
+      {% endif %}
     {% endfor %}
-
-<div class="w-100"></div>
-
-
-{% endfor %}
-    </div>
+      <div class="w-100"></div>
+  {% endfor %}
+  </div>
 </div>
 
 
