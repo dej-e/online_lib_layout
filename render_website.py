@@ -5,6 +5,7 @@ import os
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from livereload import Server
 from more_itertools import chunked
+from pathlib import Path
 
 
 def on_reload():
@@ -53,6 +54,10 @@ if __name__ == '__main__':
         autoescape=select_autoescape(['html', 'xml'])
     )
     template = env.get_template('template.html')
+
+    old_pages = sorted(Path('pages').glob('*.*'))
+    for file in old_pages:
+        os.unlink(file)
 
     try:
         with open("books_description.json", "r",
