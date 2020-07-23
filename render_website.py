@@ -55,7 +55,7 @@ if __name__ == '__main__':
     )
     template = env.get_template('template.html')
 
-    old_pages = sorted(Path('pages').glob('*.*'))
+    old_pages = Path('pages').glob('*.*')
     for file in old_pages:
         os.unlink(file)
 
