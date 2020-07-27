@@ -8,11 +8,14 @@ from pathlib import Path
 
 
 def on_reload():
-    render_index_pages(template, books_description, step)
+    print(env)
+    print(chunks)
+    render_index_pages(env, chunks)
     print("template changed.  reloading.")
 
 
-def render_index_pages(template, chunks):
+def render_index_pages(env, chunks):
+    template = env.get_template('template.html')
     max_page_number = len(chunks)
 
     folder = 'pages'
@@ -48,8 +51,6 @@ if __name__ == '__main__':
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
     )
-    template = env.get_template('template.html')
-
     old_pages = Path('pages').glob('*.*')
     for old_page in old_pages:
         os.unlink(old_page)
@@ -64,7 +65,7 @@ if __name__ == '__main__':
     books_description = json.loads(books_description_json)
     chunks = list(chunked(books_description, books_per_page))
 
-    render_index_pages(template, chunks)
+    render_index_pages(env, chunks)
     server = Server()
     server.watch('template.html', on_reload)
     server.serve(root='.', )
