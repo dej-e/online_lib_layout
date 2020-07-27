@@ -13,28 +13,24 @@ def on_reload():
     print("template changed.  reloading.")
 
 
-def render_index_pages(template, books_description, step):
-    books_count = len(books_description)
-    total_pages = math.ceil(books_count / step)
-    page_numbers = list(range(1, total_pages + 1))
+def render_index_pages(template, chunks):
+    max_page_number = len(chunks)
 
     folder = 'pages'
     os.makedirs(folder, exist_ok=True)
-    page_number = 1
 
-    for books in range(0, books_count, step):
+    for page_number, books in enumerate(chunks):
+        current_page_number = page_number
+
         rendered_page = template.render(
-            books=list(chunked(books_description[books:books + step], 2)),
-            page_numbers=page_numbers,
-            current_page=page_number,
-            next_page=page_number + 1,
-            previous_page=page_number - 1,
+            books=books,
+            current_page_number = current_page_number,
+            max_page_number = max_page_number,
         )
         filename = f'index{page_number}.html'
         filename_path = os.path.join(folder, filename)
         with open(filename_path, 'w', encoding='utf-8') as file:
             file.write(rendered_page)
-        page_number += 1
 
 
 if __name__ == '__main__':
@@ -47,7 +43,7 @@ if __name__ == '__main__':
                         )
     args = parser.parse_args()
 
-    step = int(args.books)
+    books_per_page = int(args.books)
 
     env = Environment(
         loader=FileSystemLoader('.'),
@@ -67,8 +63,9 @@ if __name__ == '__main__':
         print('File "books_description.json" does not exist')
         exit()
     books_description = json.loads(books_description_json)
+    chunks = list(chunked(books_description, books_per_page))
 
-    render_index_pages(template, books_description, step)
+    render_index_pages(template, chunks)
 
     server = Server()
     server.watch('template.html', on_reload)
