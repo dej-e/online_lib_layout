@@ -51,8 +51,8 @@ if __name__ == '__main__':
     template = env.get_template('template.html')
 
     old_pages = Path('pages').glob('*.*')
-    for file in old_pages:
-        os.unlink(file)
+    for old_page in old_pages:
+        os.unlink(old_page)
 
     try:
         with open("books_description.json", "r",
@@ -65,7 +65,6 @@ if __name__ == '__main__':
     chunks = list(chunked(books_description, books_per_page))
 
     render_index_pages(template, chunks)
-
     server = Server()
     server.watch('template.html', on_reload)
     server.serve(root='.', )
