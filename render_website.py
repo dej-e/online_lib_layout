@@ -8,8 +8,6 @@ from pathlib import Path
 
 
 def on_reload():
-    print(env)
-    print(chunks)
     render_index_pages(env, chunks)
     print("template changed.  reloading.")
 
